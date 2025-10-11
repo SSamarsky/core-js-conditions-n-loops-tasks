@@ -421,16 +421,15 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  if (arr.length <= 1) return arr;
-  const p = arr[arr.length - 1];
-  const left = [];
-  const right = [];
+  const res = arr;
   for (let i = 0; i < arr.length; i += 1) {
-    if (arr[i] < p) left.push(arr[i]);
-    else right.push(arr[i]);
+    for (let k = 0; k < arr.length - 1 - i; k += 1) {
+      if (res[k] > res[k + 1]) {
+        [res[k], res[k + 1]] = [res[k + 1], res[k]];
+      }
+    }
   }
-
-  return [...sortByAsc(left), p, ...sortByAsc(right)];
+  return res;
 }
 
 /**
