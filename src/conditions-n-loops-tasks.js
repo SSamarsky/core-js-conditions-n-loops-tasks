@@ -467,7 +467,7 @@ function shuffleChar(str, iterations) {
 }
 
 /**
- * Returns the nearest largest integer consisting of the digits of the given positive integer.
+ *
  * If there is no such number, it returns the original number.
  * Usage of String class methods is not allowed in this task.
  *
@@ -484,8 +484,44 @@ function shuffleChar(str, iterations) {
  * 321321   => 322113
  *
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const str = String(number);
+  let left = '';
+  let right = '';
+  let n = 9;
+
+  for (let i = str.length - 1; i >= 0; i -= 1) {
+    if (i === 0) return number;
+    if (str[i] > str[i - 1]) {
+      left = str.slice(0, i - 1);
+      right = str.slice(i - 1);
+      n = str[i];
+      break;
+    }
+  }
+
+  const min = right[0];
+  let indx = 0;
+
+  for (let i = 1; i < right.length; i += 1) {
+    if (right[i] > min && right[i] <= n) {
+      n = right[i];
+      indx = i;
+    }
+  }
+
+  const strRight = right.slice(0, indx) + right.slice(indx + 1);
+  const arrStr = strRight.split('');
+
+  for (let i = 0; i < arrStr.length; i += 1) {
+    for (let k = 0; k < arrStr.length - 1 - i; k += 1) {
+      if (arrStr[k] > arrStr[k + 1]) {
+        [arrStr[k], arrStr[k + 1]] = [arrStr[k + 1], arrStr[k]];
+      }
+    }
+  }
+
+  return left + n + arrStr.join('');
 }
 
 module.exports = {
