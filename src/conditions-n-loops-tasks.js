@@ -480,15 +480,21 @@ function getNearestBigger(number) {
   const str = String(number);
   let left = '';
   let right = '';
-  let n = 9;
+  let n = null;
 
   for (let i = str.length - 1; i >= 0; i -= 1) {
-    if (i === 0) return number;
-    if (str[i] > str[i - 1]) {
-      left = str.slice(0, i - 1);
-      right = str.slice(i - 1);
-      n = str[i];
-      break;
+    if (n === null) {
+      if (i === 0) return number;
+
+      if (str[i] <= str[i - 1]) {
+        right = str[i] + right;
+      } else {
+        n = str[i];
+        right = str[i - 1] + str[i] + right;
+        i -= 1;
+      }
+    } else {
+      left = str[i] + left;
     }
   }
 
@@ -502,18 +508,23 @@ function getNearestBigger(number) {
     }
   }
 
-  const strRight = right.slice(0, indx) + right.slice(indx + 1);
-  const arrStr = strRight.split('');
+  const res = left + n;
+  const sortRight = [];
 
-  for (let i = 0; i < arrStr.length; i += 1) {
-    for (let k = 0; k < arrStr.length - 1 - i; k += 1) {
-      if (arrStr[k] > arrStr[k + 1]) {
-        [arrStr[k], arrStr[k + 1]] = [arrStr[k + 1], arrStr[k]];
-      }
+  for (let i = 0; i < right.length; i += 1) {
+    if (i !== indx) {
+      sortRight.push(right[i]);
     }
   }
 
-  return Number(left + n + arrStr.join(''));
+  for (let i = 0; i < sortRight.length - 1; i += 1) {
+    for (let j = 0; j < sortRight.length - 1 - i; j += 1) {
+      if (sortRight[j] > sortRight[j + 1]) {
+        [sortRight[j], sortRight[j + 1]] = [sortRight[j + 1], sortRight[j]];
+      }
+    }
+  }
+  return Number(res + sortRight.join(''));
 }
 
 module.exports = {
