@@ -420,12 +420,17 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
+
 function sortByAsc(arr) {
   const res = arr;
-  for (let i = 0; i < arr.length; i += 1) {
-    for (let k = 0; k < arr.length - 1 - i; k += 1) {
-      if (res[k] > res[k + 1]) {
-        [res[k], res[k + 1]] = [res[k + 1], res[k]];
+  for (let i = 1; i < arr.length; i += 1) {
+    const value = arr[i];
+    for (let j = i - 1; j >= 0; j -= 1) {
+      if (value < res[j]) {
+        res[j + 1] = res[j];
+        res[j] = value;
+      } else {
+        break;
       }
     }
   }
@@ -449,21 +454,8 @@ function sortByAsc(arr) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(str, iterations) {
-  if (iterations === 0) return str;
-
-  let res = '';
-  let left = '';
-  let right = '';
-
-  for (let i = 0; i < str.length; i += 1) {
-    if (i % 2 === 0) left += str[i];
-    else right += str[i];
-  }
-
-  res = left + right;
-
-  return shuffleChar(res, iterations - 1);
+function shuffleChar(/* str, iterations */) {
+  throw new Error('Not implemented');
 }
 
 /**
@@ -521,7 +513,7 @@ function getNearestBigger(number) {
     }
   }
 
-  return left + n + arrStr.join('');
+  return Number(left + n + arrStr.join(''));
 }
 
 module.exports = {
